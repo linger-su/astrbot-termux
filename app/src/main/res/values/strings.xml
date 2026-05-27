@@ -232,5 +232,18 @@
     <string name="astrbot_webui_astrbot">AstrBot WebUI</string>
     <string name="astrbot_update_available">发现新版本 %1$s</string>
     <string name="astrbot_autostart_hint">如需保持后台运行，请在应用详情中开启「自启动」权限</string>
+    <string name="astrbot_menu_napcat_webui">NapCat WebUI</string>
+    <string name="astrbot_menu_astrbot_webui">AstrBot WebUI</string>
+    <string name="astrbot_menu_diagnose">故障诊断</string>
+    <string name="astrbot_update_title">发现新版本</string>
+    <string name="astrbot_update_message">AstrBot APP v%1$s 已发布，是否下载更新？</string>
+    <string name="astrbot_update_download">下载</string>
+    <string name="astrbot_update_ignore">忽略</string>
+    <string name="astrbot_autostart_title">后台运行提示</string>
+    <string name="astrbot_autostart_message">为确保 AstrBot 在后台持续运行，请前往：\n\n设置 → 应用管理 → AstrBot APP → 自启动 → 开启\n\n点击「前往设置」可直接跳转。</string>
+    <string name="astrbot_autostart_go_settings">前往设置</string>
+    <string name="astrbot_autostart_later">稍后</string>
+    <string name="astrbot_autostart_never">不再提示</string>
+    <string name="astrbot_browser_error">无法打开浏览器</string>
 
 </resources>
