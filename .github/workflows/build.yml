@@ -1,0 +1,107 @@
+name: Build AstrBot APP APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup NDK
+        run: |
+          sdkmanager "ndk;26.1.10909125"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125" >> $GITHUB_ENV
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: |
+          export TERMUX_APP_VERSION_NAME="0.0.1"
+          export TERMUX_APK_VERSION_TAG="v0.0.1"
+          ./gradlew assembleRelease
+        env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
+          alias: ${{ secrets.SIGNING_ALIAS }}
+          keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      - name: Rename APK
+        run: |
+          mv app/build/outputs/apk/release/*.apk AstrBot-APP-v0.0.1.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AstrBot-APP
+          path: AstrBot-APP-v0.0.1.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: AstrBot-APP
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: AstrBot-APP-v0.0.1.apk
+          body: |
+            ## AstrBot APP v0.0.1
+
+            基于 Termux 的 AstrBot + NapCatQQ 一键部署方案。
+
+            ### 下载
+            下载 `AstrBot-APP-v0.0.1.apk` 安装到 Android 设备。
+
+            ### 使用说明
+            1. 安装 APK 并打开
+            2. 首次启动自动初始化（约 5-15 分钟）
+            3. 完成后访问 WebUI 配置：
+               - NapCat WebUI: http://localhost:6099（扫码登录 QQ）
+               - AstrBot WebUI: http://localhost:6185（配置机器人）
+
+            ### 详细文档
+            请参考 [README](https://github.com/linger-su/astrbot-termux#readme)
+          draft: false
+          prerelease: false
