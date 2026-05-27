@@ -627,8 +627,34 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     /** Hook system menu to show context menu instead. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 100, 0, "NapCat WebUI");
+        menu.add(0, 101, 0, "AstrBot WebUI");
+        menu.add(0, 102, 0, "诊断");
         mTerminalView.showContextMenu();
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 100:
+                openWebUI("http://localhost:6099");
+                return true;
+            case 101:
+                openWebUI("http://localhost:6185");
+                return true;
+            case 102:
+                if (mTermuxService != null && !mTermuxService.isTermuxSessionsEmpty()) {
+                    TermuxSession termuxSession = mTermuxService.getTermuxSessions().get(0);
+                    if (termuxSession != null) {
+                        TerminalSession session = termuxSession.getTerminalSession();
+                        session.write("bash ~/diagnose.sh\n");
+                    }
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -949,7 +975,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
      */
     private void astrbotCopyScripts() {
         try {
-            File homeDir = new File(TermuxConstants.TERMUX_HOME_DIR);
+            File homeDir = new File(TermuxConstants.TERMUX_HOME_DIR_PATH);
             if (!homeDir.exists()) homeDir.mkdirs();
 
             String[] scripts = {"init.sh", "start-services.sh", "update-checker.sh",
@@ -973,7 +999,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
                 }
             }
         } catch (IOException e) {
-            Logger.logError(LOG_TAG, "Failed to copy AstrBot scripts", e);
+            Logger.logError(LOG_TAG, "Failed to copy AstrBot scripts: " + e.getMessage());
         }
     }
 
@@ -981,7 +1007,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
      * Check if this is first launch and run init.sh
      */
     private void astrbotCheckFirstLaunch() {
-        File marker = new File(TermuxConstants.TERMUX_HOME_DIR, ".astrbot_initialized");
+        File marker = new File(TermuxConstants.TERMUX_HOME_DIR_PATH, ".astrbot_initialized");
         if (!marker.exists()) {
             // First launch - run init.sh after a short delay to let terminal initialize
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -1086,37 +1112,6 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this, "无法打开浏览器", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 100, 0, "NapCat WebUI");
-        menu.add(0, 101, 0, "AstrBot WebUI");
-        menu.add(0, 102, 0, "诊断");
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 100:
-                openWebUI("http://localhost:6099");
-                return true;
-            case 101:
-                openWebUI("http://localhost:6185");
-                return true;
-            case 102:
-                if (mTermuxService != null && !mTermuxService.isTermuxSessionsEmpty()) {
-                    TermuxSession termuxSession = mTermuxService.getTermuxSessions().get(0);
-                    if (termuxSession != null) {
-                        TerminalSession session = termuxSession.getTerminalSession();
-                        session.write("bash ~/diagnose.sh\n");
-                    }
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }
