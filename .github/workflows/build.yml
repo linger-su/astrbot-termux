@@ -26,10 +26,11 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup NDK
+      - name: Setup NDK and Build Tools
         run: |
-          sdkmanager "ndk;26.1.10909125"
+          sdkmanager "ndk;26.1.10909125" "build-tools;34.0.0"
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125" >> $GITHUB_ENV
+          echo "BUILD_TOOLS=$ANDROID_HOME/build-tools/34.0.0" >> $GITHUB_ENV
 
       - name: Cache Gradle packages
         uses: actions/cache@v4
@@ -53,17 +54,29 @@ jobs:
           ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
 
       - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
-          alias: ${{ secrets.SIGNING_ALIAS }}
-          keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-
-      - name: Rename APK
         run: |
-          mv app/build/outputs/apk/release/*.apk AstrBot-APP-v0.0.1.apk
+          # Decode keystore
+          echo "${{ secrets.SIGNING_KEY_BASE64 }}" | base64 -d > /tmp/keystore.jks
+
+          # Find the unsigned APK
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+
+          # Align APK
+          $BUILD_TOOLS/zipalign -v 4 "$APK_PATH" /tmp/aligned.apk
+
+          # Sign APK
+          $BUILD_TOOLS/apksigner sign --ks /tmp/keystore.jks \
+            --ks-key-alias "${{ secrets.SIGNING_ALIAS }}" \
+            --ks-pass pass:"${{ secrets.SIGNING_STORE_PASSWORD }}" \
+            --key-pass pass:"${{ secrets.SIGNING_KEY_PASSWORD }}" \
+            --out /tmp/signed.apk \
+            /tmp/aligned.apk
+
+          # Move to final location
+          mv /tmp/signed.apk AstrBot-APP-v0.0.1.apk
+
+          # Cleanup
+          rm -f /tmp/keystore.jks /tmp/aligned.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -75,6 +88,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write
 
     steps:
       - name: Download APK
