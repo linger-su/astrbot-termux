@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE resources [
+    <!ENTITY TERMUX_PACKAGE_NAME "com.termux">
+    <!ENTITY TERMUX_APP_NAME "AstrBot APP">
+    <!ENTITY TERMUX_API_APP_NAME "Termux:API">
+    <!ENTITY TERMUX_BOOT_APP_NAME "Termux:Boot">
+    <!ENTITY TERMUX_FLOAT_APP_NAME "Termux:Float">
+    <!ENTITY TERMUX_STYLING_APP_NAME "Termux:Styling">
+    <!ENTITY TERMUX_TASKER_APP_NAME "Termux:Tasker">
+    <!ENTITY TERMUX_WIDGET_APP_NAME "Termux:Widget">
+    ]>
+
+<resources>
+
+    <string name="application_name">&TERMUX_APP_NAME;</string>
+    <string name="shared_user_label">&TERMUX_APP_NAME; 用户</string>
+
+
+
+    <!-- Termux RUN_COMMAND permission -->
+    <string name="permission_run_command_label">在 &TERMUX_APP_NAME; 环境中运行命令</string>
+    <string name="permission_run_command_description">在 &TERMUX_APP_NAME; 环境中执行命令并访问文件</string>
+
+
+
+    <!-- Termux Bootstrap Packages Installation -->
+    <string name="bootstrap_installer_body">正在安装引导包…</string>
+    <string name="bootstrap_error_title">无法安装引导包</string>
+    <string name="bootstrap_error_body">&TERMUX_APP_NAME; 无法安装引导包。</string>
+    <string name="bootstrap_error_abort">终止</string>
+    <string name="bootstrap_error_try_again">重试</string>
+    <string name="bootstrap_error_not_primary_user_message">&TERMUX_APP_NAME; 只能在主用户下运行。
+        \n为 &TERMUX_APP_NAME; 编译的引导二进制文件包含硬编码的 $PREFIX 路径，无法安装在 %1$s 以外的路径。</string>
+
+
+
+    <!-- Terminal Sidebar and Shortcuts -->
+    <string name="action_new_session">新建会话</string>
+    <string name="action_new_session_failsafe">安全模式</string>
+    <string name="title_max_terminals_reached">已达到最大终端数</string>
+    <string name="msg_max_terminals_reached">请先关闭现有终端再创建新的。</string>
+
+    <string name="title_rename_session">设置会话名称</string>
+    <string name="action_rename_session_confirm">确定</string>
+    <string name="title_create_named_session">新建命名会话</string>
+    <string name="action_create_named_session_confirm">创建</string>
+
+    <string name="action_toggle_soft_keyboard">键盘</string>
+
+    <string name="msg_enabling_terminal_toolbar">正在启用终端工具栏</string>
+    <string name="msg_disabling_terminal_toolbar">正在禁用终端工具栏</string>
+
+
+
+    <!-- Terminal Popup -->
+    <string name="action_select_url">选择链接</string>
+    <string name="title_select_url_dialog">点击链接复制，长按打开</string>
+    <string name="title_select_url_none_found">终端中未找到链接。</string>
+    <string name="msg_select_url_copied_to_clipboard">链接已复制到剪贴板</string>
+
+    <string name="action_share_transcript">分享终端记录</string>
+    <string name="title_share_transcript">终端记录</string>
+    <string name="title_share_transcript_with">发送终端记录到：</string>
+
+    <string name="action_share_selected_text">分享选中文本</string>
+    <string name="title_share_selected_text">终端文本</string>
+    <string name="title_share_selected_text_with">发送选中文本到：</string>
+
+    <string name="action_autofill_username">自动填充用户名</string>
+    <string name="action_autofill_password">自动填充密码</string>
+
+    <string name="action_reset_terminal">重置</string>
+    <string name="msg_terminal_reset">终端已重置</string>
+
+    <string name="action_kill_process">终止进程 (%d)</string>
+    <string name="title_confirm_kill_process">确定要终止此会话吗？</string>
+
+    <string name="action_style_terminal">样式</string>
+    <string name="action_toggle_keep_screen_on">保持屏幕常亮</string>
+    <string name="action_open_help">帮助</string>
+    <string name="action_open_settings">设置</string>
+
+    <string name="action_report_issue">报告问题</string>
+    <string name="msg_generating_report">正在生成报告</string>
+    <string name="msg_add_termux_debug_info">是否在报告中添加调试信息？</string>
+
+    <string name="error_styling_not_installed">&TERMUX_STYLING_APP_NAME; 插件未安装。</string>
+    <string name="action_styling_install">安装</string>
+
+
+
+    <!-- Termux Notifications -->
+    <string name="notification_action_exit">退出</string>
+    <string name="notification_action_wake_lock">获取唤醒锁</string>
+    <string name="notification_action_wake_unlock">释放唤醒锁</string>
+
+
+
+    <!-- TermuxService -->
+    <string name="error_display_over_other_apps_permission_not_granted">&TERMUX_APP_NAME; 需要「显示在其他应用上层」权限才能在 Android 10+ 上从后台启动终端会话。
+        请在 设置 -> 应用 -> &TERMUX_APP_NAME; -> 高级 中授权。</string>
+
+
+
+    <!-- Termux RunCommandService -->
+    <string name="error_run_command_service_invalid_intent_action">RunCommandService 收到无效的 Intent Action：%1$s</string>
+    <string name="error_run_command_service_mandatory_extra_missing">RunCommandService 缺少必需的 Extra：\"%1$s\"</string>
+    <string name="error_run_command_service_api_help">访问 %1$s 了解 RUN_COMMAND Intent 的用法。</string>
+
+
+
+    <!-- Termux File Receiver -->
+    <string name="title_file_received">保存文件到 ~/downloads/</string>
+    <string name="action_file_received_edit">编辑</string>
+    <string name="action_file_received_open_directory">打开目录</string>
+
+
+
+    <!-- Miscellaneous -->
+    <string name="error_allow_external_apps_ungranted">%1$s 需要在 `%2$s` 文件中设置 `allow-external-apps` 属性为 `true`。</string>
+
+
+
+    <!-- Termux Settings -->
+    <string name="title_activity_termux_settings">&TERMUX_APP_NAME; 设置</string>
+
+    <!-- Termux App Preferences -->
+    <string name="termux_preferences_title">&TERMUX_APP_NAME;</string>
+    <string name="termux_preferences_summary">&TERMUX_APP_NAME; 应用偏好设置</string>
+
+        <!-- Debugging Preferences -->
+        <string name="termux_debugging_preferences_title">调试</string>
+        <string name="termux_debugging_preferences_summary">调试相关设置</string>
+
+            <!-- Logging Category -->
+            <string name="termux_logging_header">日志</string>
+
+                <!-- Log Level -->
+                <string name="termux_log_level_title">日志级别</string>
+
+                <!-- Terminal View Key Logging -->
+                <string name="termux_terminal_view_key_logging_enabled_title">终端按键日志</string>
+                <string name="termux_terminal_view_key_logging_enabled_off">不记录终端按键事件。（默认）</string>
+                <string name="termux_terminal_view_key_logging_enabled_on">Logcat 将记录终端按键事件。
+                    日志非常详细，正常情况下应禁用以避免性能问题。</string>
+
+                <!-- Plugin Error Notifications -->
+                <string name="termux_plugin_error_notifications_enabled_title">插件错误通知</string>
+                <string name="termux_plugin_error_notifications_enabled_off">禁用插件错误的闪烁和通知。</string>
+                <string name="termux_plugin_error_notifications_enabled_on">显示插件错误的闪烁和通知。（默认）</string>
+
+                <!-- Crash Report Notifications -->
+                <string name="termux_crash_report_notifications_enabled_title">崩溃报告通知</string>
+                <string name="termux_crash_report_notifications_enabled_off">禁用崩溃报告通知。</string>
+                <string name="termux_crash_report_notifications_enabled_on">显示崩溃报告通知。（默认）</string>
+
+
+        <!-- Terminal IO Preferences -->
+        <string name="termux_terminal_io_preferences_title">终端输入/输出</string>
+        <string name="termux_terminal_io_preferences_summary">终端输入输出相关设置</string>
+
+            <!-- Keyboard Category -->
+            <string name="termux_keyboard_header">键盘</string>
+
+                <!-- Soft Keyboard -->
+                <string name="termux_soft_keyboard_enabled_title">启用软键盘</string>
+                <string name="termux_soft_keyboard_enabled_off">软键盘将被禁用。</string>
+                <string name="termux_soft_keyboard_enabled_on">软键盘将被启用。（默认）</string>
+
+                <!-- Soft Keyboard Only If No Hardware-->
+                <string name="termux_soft_keyboard_enabled_only_if_no_hardware_title">仅无硬件键盘时显示软键盘</string>
+                <string name="termux_soft_keyboard_enabled_only_if_no_hardware_off">即使连接了硬件键盘也会显示软键盘。（默认）</string>
+                <string name="termux_soft_keyboard_enabled_only_if_no_hardware_on">仅在未连接硬件键盘时显示软键盘。</string>
+
+
+        <!-- Terminal View Preferences -->
+        <string name="termux_terminal_view_preferences_title">终端视图</string>
+        <string name="termux_terminal_view_preferences_summary">终端视图相关设置</string>
+
+            <!-- View Category -->
+            <string name="termux_terminal_view_view_header">视图</string>
+
+                <!-- Terminal View Margin Adjustment -->
+                <string name="termux_terminal_view_terminal_margin_adjustment_title">终端边距调整</string>
+                <string name="termux_terminal_view_terminal_margin_adjustment_off">终端边距调整将被禁用。</string>
+                <string name="termux_terminal_view_terminal_margin_adjustment_on">终端边距调整将被启用。
+                    启用此选项可解决软键盘遮挡部分额外按键/终端视图的问题。
+                    如果导致屏幕闪烁，请禁用。（默认）</string>
+
+
+
+    <!-- Termux:API App Preferences -->
+    <string name="termux_api_preferences_title">&TERMUX_API_APP_NAME;</string>
+    <string name="termux_api_preferences_summary">&TERMUX_API_APP_NAME; 应用设置</string>
+
+
+
+    <!-- Termux:Float App Preferences -->
+    <string name="termux_float_preferences_title">&TERMUX_FLOAT_APP_NAME;</string>
+    <string name="termux_float_preferences_summary">&TERMUX_FLOAT_APP_NAME; 应用设置</string>
+
+
+
+    <!-- Termux:Tasker App Preferences -->
+    <string name="termux_tasker_preferences_title">&TERMUX_TASKER_APP_NAME;</string>
+    <string name="termux_tasker_preferences_summary">&TERMUX_TASKER_APP_NAME; 应用设置</string>
+
+
+
+    <!-- Termux:Widget App Preferences -->
+    <string name="termux_widget_preferences_title">&TERMUX_WIDGET_APP_NAME;</string>
+    <string name="termux_widget_preferences_summary">&TERMUX_WIDGET_APP_NAME; 应用设置</string>
+
+
+
+    <!-- About Preference -->
+    <string name="about_preference_title">关于</string>
+
+    <!-- Donate Preference -->
+    <string name="donate_preference_title">捐赠</string>
+
+    <!-- AstrBot APP Custom Strings -->
+    <string name="astrbot_uninstall_warning">卸载 AstrBot APP 将清除以下数据：\n• AstrBot 及其全部配置\n• NapCat QQ 登录状态\n• proot Linux 容器及所有安装的软件\n\n如需保留数据，请先备份 Termux home 目录</string>
+    <string name="astrbot_webui_napcat">NapCat WebUI</string>
+    <string name="astrbot_webui_astrbot">AstrBot WebUI</string>
+    <string name="astrbot_update_available">发现新版本 %1$s</string>
+    <string name="astrbot_autostart_hint">如需保持后台运行，请在应用详情中开启「自启动」权限</string>
+    <string name="astrbot_menu_napcat_webui">NapCat WebUI</string>
+    <string name="astrbot_menu_astrbot_webui">AstrBot WebUI</string>
+    <string name="astrbot_menu_diagnose">故障诊断</string>
+    <string name="astrbot_update_title">发现新版本</string>
+    <string name="astrbot_update_message">AstrBot APP v%1$s 已发布，是否下载更新？</string>
+    <string name="astrbot_update_download">下载</string>
+    <string name="astrbot_update_ignore">忽略</string>
+    <string name="astrbot_autostart_title">后台运行提示</string>
+    <string name="astrbot_autostart_message">为确保 AstrBot 在后台持续运行，请前往：\n\n设置 → 应用管理 → AstrBot APP → 自启动 → 开启\n\n点击「前往设置」可直接跳转。</string>
+    <string name="astrbot_autostart_go_settings">前往设置</string>
+    <string name="astrbot_autostart_later">稍后</string>
+    <string name="astrbot_autostart_never">不再提示</string>
+    <string name="astrbot_browser_error">无法打开浏览器</string>
+
+</resources>

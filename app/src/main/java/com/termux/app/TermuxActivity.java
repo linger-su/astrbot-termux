@@ -627,9 +627,9 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     /** Hook system menu to show context menu instead. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 100, 0, "NapCat WebUI");
-        menu.add(0, 101, 0, "AstrBot WebUI");
-        menu.add(0, 102, 0, "诊断");
+        menu.add(0, 100, 0, R.string.astrbot_menu_napcat_webui);
+        menu.add(0, 101, 0, R.string.astrbot_menu_astrbot_webui);
+        menu.add(0, 102, 0, R.string.astrbot_menu_diagnose);
         mTerminalView.showContextMenu();
         return true;
     }
@@ -1029,7 +1029,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         new Thread(() -> {
             try {
                 Process proc = Runtime.getRuntime().exec("bash " +
-                        TermuxConstants.TERMUX_HOME_DIR + "/update-checker.sh");
+                        TermuxConstants.TERMUX_HOME_DIR_PATH + "/update-checker.sh");
                 InputStream is = proc.getInputStream();
                 byte[] buf = new byte[1024];
                 int len = is.read(buf);
@@ -1056,13 +1056,13 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
      */
     private void astrbotShowUpdateDialog(String newVersion, String downloadUrl) {
         new AlertDialog.Builder(this)
-                .setTitle("发现新版本")
-                .setMessage("AstrBot APP v" + newVersion + " 已发布，是否下载更新？")
-                .setPositiveButton("下载", (d, w) -> {
+                .setTitle(R.string.astrbot_update_title)
+                .setMessage(getString(R.string.astrbot_update_message, newVersion))
+                .setPositiveButton(R.string.astrbot_update_download, (d, w) -> {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
                     startActivity(browserIntent);
                 })
-                .setNegativeButton("忽略", null)
+                .setNegativeButton(R.string.astrbot_update_ignore, null)
                 .show();
     }
 
@@ -1077,11 +1077,9 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             if (manufacturer.contains("xiaomi") || manufacturer.contains("redmi")) {
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     new AlertDialog.Builder(this)
-                            .setTitle("后台运行提示")
-                            .setMessage("为确保 AstrBot 在后台持续运行，请前往：\n\n" +
-                                    "设置 → 应用管理 → AstrBot APP → 自启动 → 开启\n\n" +
-                                    "点击「前往设置」可直接跳转。")
-                            .setPositiveButton("前往设置", (d, w) -> {
+                            .setTitle(R.string.astrbot_autostart_title)
+                            .setMessage(R.string.astrbot_autostart_message)
+                            .setPositiveButton(R.string.astrbot_autostart_go_settings, (d, w) -> {
                                 try {
                                     Intent intent = new Intent(
                                             android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -1091,8 +1089,8 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
                                     // ignore
                                 }
                             })
-                            .setNegativeButton("稍后", null)
-                            .setNeutralButton("不再提示", (d, w) -> {
+                            .setNegativeButton(R.string.astrbot_autostart_later, null)
+                            .setNeutralButton(R.string.astrbot_autostart_never, (d, w) -> {
                                 prefs.edit().putBoolean("autostart_hint_shown", true).apply();
                             })
                             .show();
@@ -1111,7 +1109,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "无法打开浏览器", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.astrbot_browser_error, Toast.LENGTH_SHORT).show();
         }
     }
 }
